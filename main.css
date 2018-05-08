@@ -1,0 +1,37 @@
+#box {
+    background-color: grey;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100vh;
+
+}
+.columns {
+    height:80vh;
+    width: 8%;
+    background-color: coral;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    border-left: 2px black solid;
+    border-right: 2px black solid;
+ }
+
+.redDisc {
+    height:75px;
+    width: 75px;
+    border-radius: 50%;
+    background-color: red;
+}
+
+.blackDisc {
+    height:75px;
+    width: 75px;
+    border-radius: 50%;
+    background-color: black;
+}
+h3 {
+    text-align: center;
+}
+
