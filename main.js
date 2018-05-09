@@ -1,4 +1,4 @@
-const playerOne = 'columnIndex';
+const playerOne = 'r';
 const playerTwo = 'b';
 
 let board = [
@@ -9,104 +9,65 @@ let board = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0]
 ]
-let currentDiscColor = 'columnIndex';
+let currentDiscColor = 'r';
 
 function createDot() {
-    //    console.log(event.target);
-    let destination = event.target;
-    let col = event.target;
-    let columnNumber = col.id;
-    //    console.log(col.id)
-    if (destination.childElementCount >= 6) {
-        alert("too many dots")
-    } else {
-        let rowNumber = document.getElementById(columnNumber).childElementCount;
-        // console.log(rowNumber)
+//    console.log(event.target);
+   let destination = event.target;
+   let col = event.target;
+   let columnNumber = col.id;
+//    console.log(col.id)
+   if (destination.childElementCount >= 6){
+       alert("too many dots")
+   } else { 
+    let rowNumber = document.getElementById(columnNumber).childElementCount;
+    // console.log(rowNumber)
 
-        const newElement = document.createElement("span")
-        if (currentDiscColor == 'columnIndex') {
-            currentDiscColor = 'b'
-            newElement.className = "redDisc"
-            board[rowNumber][columnNumber] = 1;
-        } else {
-            currentDiscColor = 'columnIndex'
-            newElement.className = "blackDisc"
-            board[rowNumber][columnNumber] = 1;
-        }
-
-        destination.appendChild(newElement)
-    }
+   const newElement = document.createElement("span")
+   if (currentDiscColor == 'r' ){
+       currentDiscColor='b'
+       newElement.className = "redDisc"
+       board[columnNumber][rowNumber] = 1;
+   }else{
+     currentDiscColor='r'
+     newElement.className = "blackDisc"
+     board[columnNumber][rowNumber] = 2;
+   }
+   
+   destination.appendChild(newElement)
+}
 }
 
-function allAreEqual(a, b, rowIndex, d) {
+function chkLine(a,b,c,d) {
     // Check first cell non-zero and all cells match
-    return (a && (a === b) && (a === rowIndex) && (a === d));
+    return ((a != 0) && (a == b) && (a == c) && (a == d));
 }
 
 function chkWinner(board) {
     // Check down
-    for (let columnIndex = 0; columnIndex < 3; columnIndex++) {
-        for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
-            if (
-                allAreEqual(
-                    board[columnIndex][rowIndex], 
-                    board[columnIndex + 1][rowIndex], 
-                    board[columnIndex + 2][rowIndex], 
-                    board[columnIndex + 3][rowIndex]
-                )
-            ) {
-                return board[columnIndex][rowIndex];
-            }
-        }
-    }
+    for (let r = 0; r < 3; r++)
+        for (let c = 0; c < 4; c++)
+        // console.log(board[r][c])
+            if (chkLine(board[r][c], board[r+1][c], board[r+2][c], board[r+3][c]))
+                return board[r][c];
 
     // Check right
-    for (let columnIndex = 0; columnIndex < 6; columnIndex++) {
-        for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
-            if (
-                allAreEqual(
-                    board[columnIndex][rowIndex], 
-                    board[columnIndex][rowIndex + 1], 
-                    board[columnIndex][rowIndex + 2], 
-                    board[columnIndex][rowIndex + 3]
-                )
-            ) {
-                return board[columnIndex][rowIndex];
-            }
-        }
-    }
+    for (let r = 0; r < 6; r++)
+        for (let c = 0; c < 4; c++)
+            if (chkLine(board[r][c], board[r][c+1], board[r][c+2], board[r][c+3]))
+                return board[r][c];
 
     // Check down-right
-    for (let columnIndex = 0; columnIndex < 3; columnIndex++) {
-        for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
-            if (
-                allAreEqual(
-                    board[columnIndex][rowIndex],
-                    board[columnIndex + 1][rowIndex + 1],
-                    board[columnIndex + 2][rowIndex + 2],
-                    board[columnIndex + 3][rowIndex + 3]
-                    )
-                ) {
-                return board[columnIndex][rowIndex];
-            }
-        }
-    }
+    for (let r = 0; r < 3; r++)
+        for (let c = 0; c < 4; c++)
+            if (chkLine(board[r][c], board[r+1][c+1], board[r+2][c+2], board[r+3][c+3]))
+                return board[r][c];
 
     // Check down-left
-    for (let columnIndex = 3; columnIndex < 6; columnIndex++) {
-        for (let rowIndex = 0; rowIndex < 4; rowIndex++) {
-            if (
-                allAreEqual(
-                    board[columnIndex][rowIndex],
-                    board[columnIndex - 1][rowIndex + 1],
-                    board[columnIndex - 2][rowIndex + 2],
-                    board[columnIndex - 3][rowIndex + 3]
-                )
-            ) {
-                return board[columnIndex][rowIndex];
-            }
-        }
-    }
+    for (let r = 3; r < 6; r++)
+        for (let c = 0; c < 4; c++)
+            if (chkLine(board[r][c], board[r-1][c+1], board[r-2][c+2], board[r-3][c+3]))
+                return board[r][c];
 
     return 0;
 }
@@ -114,18 +75,17 @@ function chkWinner(board) {
 // alert(chkWinner(board) + "winner");
 
 
-document.getElementById("box").addEventListener("click", function () {
-    createDot();
-
+document.getElementById("box").addEventListener("click",function(){ createDot(); 
+    
     let win = chkWinner(board);
-    if (win == 1) {
-        alert("winner");
-        location.reload();
-    } else {
+     if (win != 0) {
+         alert("winner");
+         location.reload();
+     }else {
 
-    }
+     }
 
-    console.log(win)
+    console.log('b')
 });
 
 
