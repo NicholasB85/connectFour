@@ -1,6 +1,6 @@
-const playerOne = 'r';
+const playerOne = 'rowIndex';
 const playerTwo = 'b';
-
+//array that will be used to calculate the winner...;
 let board = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -9,65 +9,84 @@ let board = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0]
 ]
-let currentDiscColor = 'r';
+let currentDiscColor = 'rowIndex';
 
 function createDot() {
-//    console.log(event.target);
-   let destination = event.target;
-   let col = event.target;
-   let columnNumber = col.id;
-//    console.log(col.id)
-   if (destination.childElementCount >= 6){
-       alert("too many dots")
-   } else { 
-    let rowNumber = document.getElementById(columnNumber).childElementCount;
-    // console.log(rowNumber)
+    //    console.log(event.target);
+    let destination = event.target;
+    let col = event.target;
+    let columnNumber = col.id;
+    //    console.log(col.id)
+    if (destination.childElementCount >= 6) {
+        alert("too many dots")
+    } else {
+        let rowNumber = document.getElementById(columnNumber).childElementCount;
+        // console.log(rowNumber)
+        //determine where to create dots
+        const newElement = document.createElement("span")
+        if (currentDiscColor == 'rowIndex') {
+            currentDiscColor = 'b'
+            newElement.className = "redDisc"
+            board[rowNumber][columnNumber] = 1;
+        } else {
+            currentDiscColor = 'rowIndex'
+            newElement.className = "blackDisc"
+            board[rowNumber][columnNumber] = 2;
+        }
 
-   const newElement = document.createElement("span")
-   if (currentDiscColor == 'r' ){
-       currentDiscColor='b'
-       newElement.className = "redDisc"
-       board[columnNumber][rowNumber] = 1;
-   }else{
-     currentDiscColor='r'
-     newElement.className = "blackDisc"
-     board[columnNumber][rowNumber] = 2;
-   }
-   
-   destination.appendChild(newElement)
-}
+        destination.appendChild(newElement)
+    }
 }
 
-function chkLine(a,b,c,d) {
+function chkLine(a, b, colIndex, d) {
     // Check first cell non-zero and all cells match
-    return ((a != 0) && (a == b) && (a == c) && (a == d));
+    return ((a != 0) && (a == b) && (a == colIndex) && (a == d));
 }
 
 function chkWinner(board) {
     // Check down
-    for (let r = 0; r < 3; r++)
-        for (let c = 0; c < 4; c++)
-        // console.log(board[r][c])
-            if (chkLine(board[r][c], board[r+1][c], board[r+2][c], board[r+3][c]))
-                return board[r][c];
+    for (let rowIndex = 0; rowIndex < 3; rowIndex++)
+        for (let colIndex = 0; colIndex < 7; colIndex++)
+            // console.log(board[rowIndex][colIndex])
+            if (chkLine(
+                    board[rowIndex][colIndex],
+                    board[rowIndex + 1][colIndex],
+                    board[rowIndex + 2][colIndex],
+                    board[rowIndex + 3][colIndex]
+                ))
+                return board[rowIndex][colIndex];
 
     // Check right
-    for (let r = 0; r < 6; r++)
-        for (let c = 0; c < 4; c++)
-            if (chkLine(board[r][c], board[r][c+1], board[r][c+2], board[r][c+3]))
-                return board[r][c];
+    for (let rowIndex = 0; rowIndex < 6; rowIndex++)
+        for (let colIndex = 0; colIndex < 4; colIndex++)
+            if (chkLine(
+                    board[rowIndex][colIndex],
+                    board[rowIndex][colIndex + 1],
+                    board[rowIndex][colIndex + 2],
+                    board[rowIndex][colIndex + 3]
+                ))
+                return board[rowIndex][colIndex];
 
     // Check down-right
-    for (let r = 0; r < 3; r++)
-        for (let c = 0; c < 4; c++)
-            if (chkLine(board[r][c], board[r+1][c+1], board[r+2][c+2], board[r+3][c+3]))
-                return board[r][c];
+    for (let rowIndex = 0; rowIndex < 3; rowIndex++)
+        for (let colIndex = 0; colIndex < 4; colIndex++)
+            if (chkLine(
+                    board[rowIndex][colIndex],
+                    board[rowIndex + 1][colIndex + 1],
+                    board[rowIndex + 2][colIndex + 2],
+                    board[rowIndex + 3][colIndex + 3]
+                ))
+                return board[rowIndex][colIndex];
 
     // Check down-left
-    for (let r = 3; r < 6; r++)
-        for (let c = 0; c < 4; c++)
-            if (chkLine(board[r][c], board[r-1][c+1], board[r-2][c+2], board[r-3][c+3]))
-                return board[r][c];
+    for (let rowIndex = 3; rowIndex < 6; rowIndex++)
+        for (let colIndex = 0; colIndex < 4; colIndex++)
+            if (chkLine(
+                    board[rowIndex][colIndex],
+                    board[rowIndex - 1][colIndex + 1],
+                    board[rowIndex - 2][colIndex + 2],
+                    board[rowIndex - 3][colIndex + 3]))
+                return board[rowIndex][colIndex];
 
     return 0;
 }
@@ -75,15 +94,16 @@ function chkWinner(board) {
 // alert(chkWinner(board) + "winner");
 
 
-document.getElementById("box").addEventListener("click",function(){ createDot(); 
-    
-    let win = chkWinner(board);
-     if (win != 0) {
-         alert("winner");
-         location.reload();
-     }else {
+document.getElementById("box").addEventListener("click", function () {
+    createDot();
 
-     }
+    let win = chkWinner(board);
+    if (win != 0) {
+        alert("winner");
+        location.reload();
+    } else {
+
+    }
 
     console.log('b')
 });
